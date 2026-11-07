@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.marikhapp.marikhkasir.R
@@ -11,6 +12,7 @@ import com.marikhapp.marikhkasir.api.Client
 import com.marikhapp.marikhkasir.models.DefaultResponse
 import com.marikhapp.marikhkasir.models.kategoriModels.UpdateKategoriResponse
 import kotlinx.android.synthetic.main.activity_tambah_edit_kategori.*
+import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -43,6 +45,7 @@ class TambahEditKategori : AppCompatActivity() {
     private fun tambahKategori(){
         buttonTambahEditKategori.text = "Tambah Kategori"
         buttonTambahEditKategori.setOnClickListener {
+            progressBarAddKategori.visibility = View.VISIBLE
             val namakategori = editTextTambahEditKategori.text.toString().toUpperCase()
 
             if (namakategori.isEmpty()){
@@ -56,10 +59,12 @@ class TambahEditKategori : AppCompatActivity() {
                     override fun onFailure(call: Call<UpdateKategoriResponse>, t: Throwable) {
                         Toast.makeText(applicationContext,t.message,Toast.LENGTH_LONG).show()
                         Log.d("test123",t.message.toString())
+                        progressBarAddKategori.visibility = View.GONE
                     }
 
                     override fun onResponse(call: Call<UpdateKategoriResponse>, response: Response<UpdateKategoriResponse>) {
                         if(response.isSuccessful){
+                            progressBarAddKategori.visibility = View.GONE
                             response.body()
                             val message = response.body()!!.message
                             Toast.makeText(applicationContext,message,Toast.LENGTH_LONG).show()
@@ -67,7 +72,13 @@ class TambahEditKategori : AppCompatActivity() {
                             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                             startActivity(intent)
                         }else  {
-                            Toast.makeText(applicationContext,response.errorBody()!!.string(),Toast.LENGTH_SHORT).show()
+                            try {
+                                val jObjError = JSONObject(response.errorBody()!!.string())
+                                Toast.makeText(applicationContext, jObjError.getString("message"), Toast.LENGTH_LONG).show()
+                                } catch (e: Exception) {
+                                Toast.makeText(applicationContext, e.message, Toast.LENGTH_LONG).show()
+                            }
+                            progressBarAddKategori.visibility = View.GONE
                         }
                     }
             })
@@ -80,6 +91,7 @@ class TambahEditKategori : AppCompatActivity() {
         buttonTambahEditKategori.text = "Edit Kategori"
         editTextTambahEditKategori.setText(nama_kat_produk)
         buttonTambahEditKategori.setOnClickListener {
+            progressBarAddKategori.visibility = View.VISIBLE
             val nama_kat_produk = editTextTambahEditKategori.text.toString().trim()
 
             if (nama_kat_produk.isEmpty()){
@@ -92,10 +104,12 @@ class TambahEditKategori : AppCompatActivity() {
                 .enqueue(object : Callback<DefaultResponse> {
                     override fun onFailure(call: Call<DefaultResponse>, t: Throwable) {
                         Toast.makeText(applicationContext,t.message,Toast.LENGTH_LONG).show()
+                        progressBarAddKategori.visibility = View.GONE
                     }
 
                     override fun onResponse(call: Call<DefaultResponse>, response: Response<DefaultResponse>) {
                         Toast.makeText(applicationContext,response.body()?.message,Toast.LENGTH_LONG).show()
+                        progressBarAddKategori.visibility = View.GONE
                         val intent = Intent(applicationContext, KategoriMenagement::class.java)
                         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                         startActivity(intent)

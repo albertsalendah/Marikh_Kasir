@@ -6,6 +6,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.GridView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.marikhapp.marikhkasir.R
 import com.marikhapp.marikhkasir.activities.Main_Menu
@@ -42,22 +43,29 @@ class KategoriMenagement : AppCompatActivity(){
         }
 
         val gridviewkategori = findViewById<View>(R.id.gridviewkategori) as GridView
-
+        progressBarKategori.visibility = View.VISIBLE
         CustomAdapter = KategoriMenagementAdapter(listKategori, context)
         Client.instance.listkategori()
             .enqueue(object : Callback<List<Kategori>>{
                 override fun onFailure(call: Call<List<Kategori>>, t: Throwable) {
-
+                    Toast.makeText(applicationContext,"Terjadi Kesalahan Saat Memuat data", Toast.LENGTH_LONG).show()
+                    progressBarKategori.visibility = View.GONE
                 }
 
                 override fun onResponse(call: Call<List<Kategori>>, response: Response<List<Kategori>>) {
-                    val arrayKategori = response.body()!!
-                    for(i in 1..arrayKategori.size){
-                        listKategori.add(KategoriObject(arrayKategori[i-1].id_kat_produk,arrayKategori[i-1].nama_kat_produk))
-                        container.add(KategoriObject(arrayKategori[i-1].id_kat_produk,arrayKategori[i-1].nama_kat_produk))
+                    if (response.isSuccessful){
+                        progressBarKategori.visibility = View.GONE
+                        val arrayKategori = response.body()!!
+                        for(i in 1..arrayKategori.size){
+                            listKategori.add(KategoriObject(arrayKategori[i-1].id_kat_produk,arrayKategori[i-1].nama_kat_produk))
+                            container.add(KategoriObject(arrayKategori[i-1].id_kat_produk,arrayKategori[i-1].nama_kat_produk))
+                        }
+                        gridviewkategori.adapter =  CustomAdapter
+                        CustomAdapter.notifyDataSetChanged()
+                    }else{
+                        Toast.makeText(applicationContext,"Terjadi Kesalahan Saat Memuat data",Toast.LENGTH_LONG).show()
+                        progressBarKategori.visibility = View.GONE
                     }
-                    gridviewkategori.adapter =  CustomAdapter
-                    CustomAdapter.notifyDataSetChanged()
                 }
             })
     }

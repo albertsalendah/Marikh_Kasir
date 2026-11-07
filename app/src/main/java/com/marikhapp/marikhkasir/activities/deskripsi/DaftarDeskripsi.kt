@@ -43,26 +43,31 @@ class DaftarDeskripsi : AppCompatActivity() {
             intent.putExtra("mode","new")
             this.startActivity(intent)
         }
-
+        progresBarDeskripsi.visibility = View.VISIBLE
         val gridviewdaftardeskripsi = findViewById<View>(R.id.gridviewDaftarDeskripsi) as GridView
         adapter = DeskripsiAdapter(arrayDaftarDeskripsi,context)
 
         Client.instance.daftardeskripsiproduk(id_kat_produk!!.toInt()).enqueue(object : Callback<List<Deskripsi>>{
             override fun onFailure(call: Call<List<Deskripsi>>, t: Throwable) {
                 Toast.makeText(context,t.message,Toast.LENGTH_SHORT).show()
+                progresBarDeskripsi.visibility = View.GONE
             }
 
             override fun onResponse(call: Call<List<Deskripsi>>, response: Response<List<Deskripsi>>) {
-                val data = response.body()
-                for(i in 1..data!!.size){
-                    arrayDaftarDeskripsi.add(DeskripsiObject(data[i-1].id_deskripsi,data[i-1].nama_deskripsi,data[i-1].id_kat_produk))
+                if (response.isSuccessful){
+                    progresBarDeskripsi.visibility = View.GONE
+                    val data = response.body()
+                    for(i in 1..data!!.size){
+                        arrayDaftarDeskripsi.add(DeskripsiObject(data[i-1].id_deskripsi,data[i-1].nama_deskripsi,data[i-1].id_kat_produk))
+                    }
+                    gridviewdaftardeskripsi.adapter = adapter
+                    adapter.notifyDataSetChanged()
                 }
-                gridviewdaftardeskripsi.adapter = adapter
-                adapter.notifyDataSetChanged()
             }
         })
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onBackPressed() {
         val intent = Intent(this,KategoriMenagement::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK

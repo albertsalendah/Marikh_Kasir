@@ -2,73 +2,162 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".activities.transaksi.DeskripsiPesanan.DeskripsiPesanan">
+    android:layout_width="650dp"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    tools:context=".activities.transaksi.deskripsiPesanan.DeskripsiPesanan">
 
-    <TextView
-        android:id="@+id/textView4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:text="Deskripsi"
-        android:textSize="30sp"
-        android:textStyle="bold"
+    <!--<ScrollView
+        android:id="@+id/scrollView2"
+        android:layout_width="650dp"
+        android:layout_height="450dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0">-->
 
-    <GridView
-        android:id="@+id/gridviewDaftarDeskripsiPesanan"
+    <ScrollView
         android:layout_width="0dp"
-        android:layout_height="250dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
-        android:numColumns="auto_fit"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView4">
-
-    </GridView>
-
-    <androidx.gridlayout.widget.GridLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:columnCount="3"
+        android:layout_marginBottom="16dp"
+        android:focusable="false"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/gridviewDaftarDeskripsiPesanan">
+        app:layout_constraintTop_toTopOf="parent">
 
-        <Button
-            android:id="@+id/buttonMIN"
-            android:layout_width="35dp"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="-"
-            android:textSize="24sp"
-            android:textStyle="bold"
-            app:layout_column="0"
-            app:layout_row="0" />
+            android:orientation="vertical">
 
-        <EditText
-            android:id="@+id/editTextJumlahPesanan"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:ems="10"
-            android:inputType="number"
-            app:layout_column="1"
-            app:layout_row="0"
-            android:textAlignment="center"/>
+            <TextView
+                android:id="@+id/textView4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="4dp"
+                android:text="Deskripsi"
+                android:textColor="#000000"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-        <Button
-            android:id="@+id/buttonPLUS"
-            android:layout_width="35dp"
-            android:layout_height="wrap_content"
-            android:text="+"
-            android:textSize="24sp"
-            android:textStyle="bold"
-            app:layout_column="2"
-            app:layout_row="0" />
-    </androidx.gridlayout.widget.GridLayout>
+            <GridView
+                android:id="@+id/gridviewDaftarDeskripsiPesanan"
+                android:layout_width="0dp"
+                android:layout_height="200dp"
+                android:layout_marginTop="8dp"
+                android:columnWidth="150dp"
+                android:descendantFocusability="blocksDescendants"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
+                android:gravity="start|left|center_vertical"
+                android:numColumns="4"
+                android:stretchMode="columnWidth"
+                android:touchscreenBlocksFocus="true"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView4">
+
+            </GridView>
+
+            <EditText
+                android:id="@+id/editTextAddNotes"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="2dp"
+                android:layout_marginEnd="8dp"
+                android:ems="10"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:hint="Catatan Tambahan..."
+                android:inputType="textPersonName"
+                android:textColor="#000000"
+                android:textColorHint="#3A3838"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/gridviewDaftarDeskripsiPesanan" />
+
+            <TextView
+                android:id="@+id/textView6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:text="Jumlah"
+                android:textColor="#000000"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/editTextAddNotes" />
+
+            <androidx.gridlayout.widget.GridLayout
+                android:id="@+id/gridLayout4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                app:columnCount="3"
+                app:layout_constraintEnd_toEndOf="@+id/textView6"
+                app:layout_constraintStart_toStartOf="@+id/textView6"
+                app:layout_constraintTop_toBottomOf="@+id/textView6">
+
+                <Button
+                    android:id="@+id/buttonMIN"
+                    android:layout_width="35dp"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/button_white"
+                    android:text="-"
+                    android:textSize="24sp"
+                    android:textStyle="bold"
+                    app:layout_column="0"
+                    app:layout_row="0" />
+
+                <EditText
+                    android:id="@+id/editTextJumlahPesanan"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:ems="10"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"
+                    android:inputType="number"
+                    android:textAlignment="center"
+                    android:textColor="#000000"
+                    app:layout_column="1"
+                    app:layout_row="0" />
+
+                <Button
+                    android:id="@+id/buttonPLUS"
+                    android:layout_width="35dp"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/button_white"
+                    android:text="+"
+                    android:textSize="24sp"
+                    android:textStyle="bold"
+                    app:layout_column="2"
+                    app:layout_row="0" />
+            </androidx.gridlayout.widget.GridLayout>
+
+            <Button
+                android:id="@+id/buttonInputDeskripsiPesanan"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:background="@drawable/button_white"
+                android:text="Input"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/gridLayout4"
+                app:layout_constraintStart_toStartOf="@+id/gridLayout4"
+                app:layout_constraintTop_toBottomOf="@+id/gridLayout4" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

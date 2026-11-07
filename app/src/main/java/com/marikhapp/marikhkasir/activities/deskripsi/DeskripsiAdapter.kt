@@ -59,7 +59,7 @@ class DeskripsiAdapter(private var daftardeskripsi : ArrayList<DeskripsiObject>,
     private fun popup(view:View,context: Context,id_deskripsi : String,nama_deskripsi:String,id_kat_produk:String){
         val menu = PopupMenu(context,view)
         menu.menu.add("Edit Deskripsi")
-        menu.menu.add("Hapus Deskripsi")
+        //menu.menu.add("Hapus Deskripsi")
         menu.show()
         menu.setOnMenuItemClickListener { item ->
             when{

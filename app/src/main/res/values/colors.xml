@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#008577</color>
+    <color name="colorPrimary">#F7AA35</color>
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
     <color name="shadow">#C3BABA</color>
+    <color name="bg_white">#ffffff</color>
+    <color name="Bl">#000000</color>
+    <color name="table_divider_color">#b1b1b1</color>
 </resources>

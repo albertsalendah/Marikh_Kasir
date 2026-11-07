@@ -3,21 +3,25 @@ package com.marikhapp.marikhkasir.activities.produk
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
+import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.util.Base64
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import com.marikhapp.marikhkasir.R
-import com.marikhapp.marikhkasir.activities.transaksi.DeskripsiPesanan.DeskripsiPesanan
+import com.marikhapp.marikhkasir.activities.transaksi.deskripsiPesanan.DeskripsiPesanan
 import com.marikhapp.marikhkasir.api.Client
 import com.marikhapp.marikhkasir.models.ProdukModels.ProdukRespon
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class ProdukAdapter (private var daftarproduk : ArrayList<ProdukObject>, val context: Context, val id_kat_produk:String, val kategoriproduct:String,val stats: String):BaseAdapter(){
+
+@Suppress("NAME_SHADOWING")
+class ProdukAdapter (private var daftarproduk : ArrayList<ProdukObject>, val context: Context, val id_kat_produk:String, val kategoriproduct:String):BaseAdapter(){
 
     private var inflator : LayoutInflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
 
@@ -30,33 +34,43 @@ class ProdukAdapter (private var daftarproduk : ArrayList<ProdukObject>, val con
         holder.imageViewGambarProduk = view.findViewById(R.id.imageViewGambarProduk) as ImageView
         holder.textViewIdProduk = view.findViewById(R.id.textViewIdProduk) as TextView
 
-        val produk:ProdukObject = daftarproduk[position]
+        val produk : ProdukObject = daftarproduk[position]
         //decode gambar
         if(produk.gbr_produk == null || produk.gbr_produk == ""){
-            holder.imageViewGambarProduk.setImageResource(R.drawable.logomarikh)
+            val icon = BitmapFactory.decodeResource(context.resources, R.drawable.logomarikh)
+            val compresdBitmap = getResizedBitmap(icon, 150)
+            holder.imageViewGambarProduk.setImageBitmap(compresdBitmap)
+            //holder.imageViewGambarProduk.setImageResource(R.drawable.logomarikh)
         }else{
             val stringGambar = Base64.decode(produk.gbr_produk, Base64.DEFAULT)
             val decodedStringGambar = BitmapFactory.decodeByteArray(stringGambar, 0, stringGambar.size)
+            //val compresdBitmap = getResizedBitmap(decodedStringGambar, 100)
             holder.imageViewGambarProduk.setImageBitmap(decodedStringGambar)
             holder.imageViewGambarProduk.scaleType = ImageView.ScaleType.FIT_XY
         }
 
+        holder.textViewIdProduk.text = produk.id_produk.toString()
         holder.textViewNamaProduk.text = produk.nama_produk
         holder.textViewHargaProduk.text = "Rp."+produk.harga_produk
-        holder.textViewIdProduk.text = produk.id_produk.toString()
 
-        if(stats == "daftarproduk"){
             view.setOnClickListener {
                 popup(view,context.applicationContext,produk.id_produk,id_kat_produk,kategoriproduct)
             }
-        }else if(stats == "fragmentTransaksi"){
-            view.setOnClickListener {
-               deskripsipesanan(view)
-            }
-        }
         return view
     }
-
+    fun getResizedBitmap(image: Bitmap, maxSize: Int): Bitmap? {
+        var width = image.width
+        var height = image.height
+        val bitmapRatio = width.toFloat() / height.toFloat()
+        if (bitmapRatio > 1) {
+            width = maxSize
+            height = (width / bitmapRatio).toInt()
+        } else {
+            height = maxSize
+            width = (height * bitmapRatio).toInt()
+        }
+        return Bitmap.createScaledBitmap(image, width, height, true)
+    }
     override fun getItem(position: Int): Any? {
        return null
     }
@@ -77,16 +91,20 @@ class ProdukAdapter (private var daftarproduk : ArrayList<ProdukObject>, val con
         lateinit var textViewIdProduk : TextView
     }
 
-    private fun deskripsipesanan(view: View){
+    private fun deskripsipesanan(id_produk: Int,nama_produk:String,harga_produk:Int){
+
         val intent = Intent(this.context,DeskripsiPesanan::class.java)
         intent.putExtra("id_kat_produk",id_kat_produk)
+        intent.putExtra("id_produk",id_produk.toString())
+        intent.putExtra("nama_produk",nama_produk)
+        intent.putExtra("harga_produk",harga_produk.toString())
         this.context.startActivity(intent)
     }
 
     private fun popup(view: View,context: Context,id_produk:Int,id_kat_produk:String,kategoriproduct:String){
         val menu = PopupMenu(context, view)
         menu.menu.add("Edit Product")
-        menu.menu.add("Hapus Product")
+        //menu.menu.add("Hapus Product")
 
         menu.show()
 

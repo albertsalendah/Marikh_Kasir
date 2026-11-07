@@ -1,0 +1,3 @@
+package com.marikhapp.marikhkasir.models.TrxPenjualanModels
+
+data class TrxPenjualan(val id_trx_penjualan : String,val tgl_trx_input : String,val tgl_trx_bayar : String?,val tagihan_akhir : Int,val tagihan_awal : Int,val total_diskon : Int?,var tax : Int?,val terbayar : Int?,val komisi:Int?,val id_pelanggan : String,val nama : String,val no_meja : String,val id_method_bayar : Int,val jenis_tagihan : String,val id_user : Int)

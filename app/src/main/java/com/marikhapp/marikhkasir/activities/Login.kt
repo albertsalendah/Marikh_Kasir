@@ -1,11 +1,10 @@
 package com.marikhapp.marikhkasir.activities
 
+import android.content.Context
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
-import android.widget.EditText
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import com.marikhapp.marikhkasir.R
 import com.marikhapp.marikhkasir.api.Client
 import com.marikhapp.marikhkasir.models.userModels.LoginResponse
@@ -19,7 +18,7 @@ class Login : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
-
+        checkLoginStatus()
         buttonlogin.setOnClickListener {
             val user =  username.text.toString()
             val pass =  password.text.toString()
@@ -44,12 +43,13 @@ class Login : AppCompatActivity() {
                 }
 
                 override fun onResponse(call: Call<LoginResponse>, response: Response<LoginResponse>) {
-                    if(!response.body()?.error!!){
+                    val arrayUser = response.body()
+                    if(response.body() != null && !response.body()!!.error){
                         val intent = Intent(applicationContext,Main_Menu::class.java)
                         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                         startActivity(intent)
                         Toast.makeText(applicationContext,response.body()?.message,Toast.LENGTH_LONG).show()
-                        Log.d("TestData",response.body()!!.user.tgl_lahir_user)
+                        saveUserInfo(user,response.body()!!.user.id_user)
                     }else{
                         Toast.makeText(applicationContext,response.body()?.message,Toast.LENGTH_LONG).show()
                     }
@@ -57,4 +57,30 @@ class Login : AppCompatActivity() {
 
             })
     }
+
+    private fun saveUserInfo(user: String,id : String){
+        val preferences = getSharedPreferences("USER_NAME", Context.MODE_PRIVATE)
+        val editor = preferences.edit()
+        editor.putString("user_name", user)
+        editor.apply()
+        val preferencesid = getSharedPreferences("USER_ID", Context.MODE_PRIVATE)
+        val editorid = preferencesid.edit()
+        editorid.putString("user_id", id)
+        editorid.apply()
+    }
+
+    private fun checkLoginStatus(){
+        val preferences = getSharedPreferences("USER_NAME", Context.MODE_PRIVATE)
+        val user_name = preferences.getString("user_name", "").toString()
+
+        if (user_name.isNotEmpty()){
+            val intent = Intent(applicationContext,Main_Menu::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            startActivity(intent)
+        }else{
+            return
+        }
+
+    }
+
 }

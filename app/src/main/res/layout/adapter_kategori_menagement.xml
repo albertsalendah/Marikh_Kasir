@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/cardKategori"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_gravity="center"
-    app:cardCornerRadius="10dp"
+    android:clipChildren="false"
     app:cardBackgroundColor="@color/shadow"
-    android:clipChildren="false">
+    app:cardCornerRadius="10dp">
 
 
     <TextView
         android:id="@+id/textViewNamaKategori"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="#FFC107"
         android:gravity="center"
         android:paddingLeft="8dp"
         android:paddingTop="8dp"
@@ -23,8 +23,7 @@
         android:paddingBottom="8dp"
         android:text="TextView"
         android:textColor="@android:color/white"
-        android:textSize="14sp"
-        android:background="@drawable/border2" />
+        android:textSize="14sp" />
 
 
 </androidx.cardview.widget.CardView>

@@ -4,19 +4,57 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#FFFFFF"
     tools:context=".activities.deskripsi.TambahEditDeskripsi">
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/progressBarAddDeskripsi"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="#A84A4A4A"
+            android:elevation="5dp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ProgressBar
+                android:id="@+id/progressBar4"
+                style="?android:attr/progressBarStyle"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/textView54"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:text="Now Loading..."
+                android:textColor="#E1E1E1"
+                android:textSize="24sp"
+                app:layout_constraintEnd_toEndOf="@+id/progressBar4"
+                app:layout_constraintStart_toStartOf="@+id/progressBar4"
+                app:layout_constraintTop_toBottomOf="@+id/progressBar4" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <TextView
             android:id="@+id/modeDeskripsi"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
-            android:layout_marginLeft="24dp"
             android:layout_marginTop="24dp"
             android:text="Deskripsi Name"
+            android:textColor="#000000"
+            android:textSize="24sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -41,7 +79,8 @@
                 android:layout_gravity="center"
                 android:paddingLeft="8dp"
                 android:paddingRight="8dp"
-                android:text="Deskripsi Name" />
+                android:text="Deskripsi Name"
+                android:textColor="#000000" />
 
             <EditText
                 android:id="@+id/editTextTambahEditDeskripsi"
@@ -57,16 +96,19 @@
                 android:imeOptions="flagNoExtractUi"
                 android:inputType="textPersonName"
                 android:paddingLeft="8dp"
-                android:paddingRight="8dp" />
+                android:paddingRight="8dp"
+                android:textColor="#000000" />
 
         </GridLayout>
 
         <Button
             android:id="@+id/buttonTambahEditDeskripsi"
-            android:layout_width="wrap_content"
+            android:layout_width="160dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="44dp"
             android:layout_marginBottom="8dp"
+            android:background="@drawable/button_white"
+            android:textColor="#000000"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@+id/gridLayout"
             app:layout_constraintHorizontal_bias="0.495"

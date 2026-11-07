@@ -51,29 +51,35 @@ class DaftarProduct : AppCompatActivity() {
         }
 
         val gridviewproduk = findViewById<View>(R.id.gridviewDaftarProduct) as GridView
-        val stats = "daftarproduk"
-        customadapterdaftarproduk = ProdukAdapter(arrayProduk,context,id_kat_produk!!,kategoriproduct!!,stats)
 
-        Client.instance.daftarproduk(id_kat_produk.toInt())
-            .enqueue(object : Callback<List<Produk>>{
+        customadapterdaftarproduk = ProdukAdapter(arrayProduk,context,id_kat_produk!!,kategoriproduct!!)
+        progressBarProduk.visibility = View.VISIBLE
+        Client.instance.daftarproduk(id_kat_produk.toInt()).enqueue(object : Callback<List<Produk>>{
                 override fun onFailure(call: Call<List<Produk>>, t: Throwable) {
-                    Toast.makeText(applicationContext,t.message,Toast.LENGTH_LONG).show()
+                    Toast.makeText(this@DaftarProduct,"Terjadi Kesalahan Saat Memuat Data",Toast.LENGTH_LONG).show()
+                    progressBarProduk.visibility = View.GONE
                 }
 
                 override fun onResponse(call: Call<List<Produk>>, response: Response<List<Produk>>) {
-                    val jumlahdata = response.body()
-                    for(i in 1..jumlahdata!!.size){
-
-                        customadapterdaftarproduk.notifyDataSetChanged()
-                        arrayProduk.add(ProdukObject(jumlahdata[i-1].id_produk,jumlahdata[i-1].nama_produk,jumlahdata[i-1].harga_produk,jumlahdata[i-1].gbr_produk))
-                        container.add(ProdukObject(jumlahdata[i-1].id_produk,jumlahdata[i-1].nama_produk,jumlahdata[i-1].harga_produk,jumlahdata[i-1].gbr_produk))
+                    if (response.isSuccessful){
+                        val jumlahdata = response.body()
+                        for(i in 1..jumlahdata!!.size){
+                            arrayProduk.add(ProdukObject(jumlahdata[i-1].id_produk,jumlahdata[i-1].nama_produk,jumlahdata[i-1].harga_produk,jumlahdata[i-1].gbr_produk,jumlahdata[i-1].id_kat_produk,jumlahdata[i-1].diskon_produk,jumlahdata[i-1].tgl_awal_diskon,jumlahdata[i-1].tgl_akhir_diskon,jumlahdata[i-1].diskon_olfood,jumlahdata[i-1].tgl_awal_diskon_olfood,jumlahdata[i-1].tgl_akhir_diskon_olfood))
+                            container.add(ProdukObject(jumlahdata[i-1].id_produk,jumlahdata[i-1].nama_produk,jumlahdata[i-1].harga_produk,jumlahdata[i-1].gbr_produk,jumlahdata[i-1].id_kat_produk,jumlahdata[i-1].diskon_produk,jumlahdata[i-1].tgl_awal_diskon,jumlahdata[i-1].tgl_akhir_diskon,jumlahdata[i-1].diskon_olfood,jumlahdata[i-1].tgl_awal_diskon_olfood,jumlahdata[i-1].tgl_akhir_diskon_olfood))
+                            customadapterdaftarproduk.notifyDataSetChanged()
+                        }
+                        arrayProduk.sortBy { it.nama_produk }
+                        gridviewproduk.adapter = customadapterdaftarproduk
+                        progressBarProduk.visibility = View.GONE
+                    }else{
+                        Toast.makeText(this@DaftarProduct,"Terjadi Kesalahan Saat Memuat Data",Toast.LENGTH_LONG).show()
+                        progressBarProduk.visibility = View.GONE
                     }
-                    gridviewproduk.adapter = customadapterdaftarproduk
                 }
 
             })
 
-        searchMakanan.addTextChangedListener(object : TextWatcher{
+        searchProduk.addTextChangedListener(object : TextWatcher{
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 filter(s!!)
             }

@@ -41,6 +41,7 @@ class TambahEditDeskripsi : AppCompatActivity() {
         }
 
         buttonTambahEditDeskripsi.setOnClickListener {
+            progressBarAddDeskripsi.visibility = View.VISIBLE
             val namadeskripsi = editTextTambahEditDeskripsi.text.toString()
             if(namadeskripsi.isEmpty()){
                 editTextTambahEditDeskripsi.error = "Nama Deskripsi Kosong"
@@ -48,9 +49,15 @@ class TambahEditDeskripsi : AppCompatActivity() {
                 return@setOnClickListener
             }
             if(mode == "new"){
-                tambahDeskripsi(namadeskripsi,id_kat_produk)
+                if (id_kat_produk != null) {
+                    tambahDeskripsi(namadeskripsi,id_kat_produk)
+                }
             }else if(mode == "edit"){
-                editDeskripsi(namadeskripsi,id_deskripsi,id_kat_produk)
+                if (id_deskripsi != null) {
+                    if (id_kat_produk != null) {
+                        editDeskripsi(namadeskripsi,id_deskripsi,id_kat_produk)
+                    }
+                }
             }
         }
 
@@ -60,6 +67,7 @@ class TambahEditDeskripsi : AppCompatActivity() {
         Client.instance.tambahdeskripsiproduk(namadeskripsi,id_kat_produk.toInt()).enqueue(object : Callback<DefaultResponse>{
             override fun onFailure(call: Call<DefaultResponse>, t: Throwable) {
                 Toast.makeText(applicationContext,"Terjadi Kesalahan Saat Memuat Data",Toast.LENGTH_SHORT).show()
+                progressBarAddDeskripsi.visibility = View.GONE
             }
 
             override fun onResponse(call: Call<DefaultResponse>, response: Response<DefaultResponse>) {
@@ -69,8 +77,10 @@ class TambahEditDeskripsi : AppCompatActivity() {
                     val intent = Intent(view.context,DaftarDeskripsi::class.java)
                     intent.putExtra("id_kat_produk",id_kat_produk)
                     view.context.startActivity(intent)
+                    progressBarAddDeskripsi.visibility = View.GONE
                 }else{
                     Toast.makeText(applicationContext,"Gagal Menambahkan Data",Toast.LENGTH_SHORT).show()
+                    progressBarAddDeskripsi.visibility = View.GONE
                 }
             }
         })
@@ -80,17 +90,20 @@ class TambahEditDeskripsi : AppCompatActivity() {
         Client.instance.updatedeskripsiproduk(id_deskripsi.toInt(),namadeskripsi).enqueue(object : Callback<DefaultResponse>{
             override fun onFailure(call: Call<DefaultResponse>, t: Throwable) {
                 Toast.makeText(applicationContext,"Terjadi Kesalahan Saat Memuat Data",Toast.LENGTH_SHORT).show()
+                progressBarAddDeskripsi.visibility = View.GONE
             }
 
             override fun onResponse(call: Call<DefaultResponse>, response: Response<DefaultResponse>) {
                 if(response.isSuccessful){
                     Toast.makeText(applicationContext,"Deskripsi Berhasil Diedit",Toast.LENGTH_LONG).show()
+                    progressBarAddDeskripsi.visibility = View.GONE
                     val view = View(this@TambahEditDeskripsi)
                     val intent = Intent(view.context,DaftarDeskripsi::class.java)
                     intent.putExtra("id_kat_produk",id_kat_produk)
                     view.context.startActivity(intent)
                 }else{
                     Toast.makeText(applicationContext,"Gagal Mengubah Data",Toast.LENGTH_SHORT).show()
+                    progressBarAddDeskripsi.visibility = View.GONE
                 }
             }
         })
